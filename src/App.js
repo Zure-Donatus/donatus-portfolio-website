@@ -6,10 +6,6 @@ import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from
 import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, getDoc, setDoc, getDocs } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-// --- Local Image Imports ---
-// IMPORTANT: Make sure you have a folder structure like: src -> assets -> images
-// import aboutImage from './assets/images/dona.JPG'; 
-
 // --- Helper Functions & Configuration ---
 
 const firebaseConfig = {
@@ -129,7 +125,7 @@ const ThemeToggle = ({ theme, setTheme }) => {
 
 const Navbar = ({ setPage, setCurrentPostId, user, theme, setTheme }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const navLinks = ["Home", "About", "Skills", "Projects", "Services", "Blog", "Contact"];
+    const navLinks = ["Home", "About", "Skills", "Projects", "Services", "Team", "Blog", "Contact"];
 
     const handleLinkClick = (pageName) => {
         const sectionId = pageName.toLowerCase();
@@ -341,6 +337,26 @@ const ServicesSection = () => {
                         </div>
                         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{service.title}</h3>
                         <p className="text-slate-600 dark:text-slate-300">{service.description}</p>
+                    </div>
+                ))}
+            </div>
+        </Section>
+    );
+};
+
+const TeamSection = () => {
+    const teamMembers = useFirestoreCollection('teamMembers');
+
+    return (
+        <Section id="team" className="bg-white dark:bg-gray-900">
+            <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12 fade-in">Dedicated Team</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 fade-in">
+                {teamMembers.map(member => (
+                    <div key={member.id} className="text-center p-6 bg-slate-100 dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-indigo-500/20 transition-all duration-300 transform hover:-translate-y-1">
+                        <img src={member.imageUrl || 'https://placehold.co/128x128/1e293b/ffffff?text=Avatar'} alt={member.name} className="w-32 h-32 rounded-full mx-auto mb-4 object-cover" />
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">{member.name}</h3>
+                        <p className="text-indigo-500 mb-2">{member.title}</p>
+                        <p className="text-slate-600 dark:text-slate-300 text-sm">{member.description}</p>
                     </div>
                 ))}
             </div>
@@ -967,6 +983,15 @@ const AdminDashboard = ({ onLogout, setPage }) => {
                     ]}
                 />
                 <ContentEditor
+                    collectionName="teamMembers"
+                    fields={[
+                        { name: 'name', label: 'Name' },
+                        { name: 'title', label: 'Title' },
+                        { name: 'description', label: 'Description', type: 'textarea' },
+                        { name: 'imageUrl', label: 'Photo', type: 'file' },
+                    ]}
+                />
+                <ContentEditor
                     collectionName="skills"
                     fields={[{ name: 'name', label: 'Skill Name' }]}
                 />
@@ -1052,6 +1077,7 @@ export default function App() {
                             <ProjectsSection />
                             <ServicesSection />
                             <TestimonialsSection />
+                            <TeamSection />
                             <BlogSection setPage={setPage} setCurrentPostId={setCurrentPostId} />
                             <ContactSection />
                         </main>
