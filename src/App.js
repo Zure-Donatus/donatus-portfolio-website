@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 
 // --- Firebase Imports ---
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, getDoc, setDoc, getDocs } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+
+// --- Local Image Imports ---
+// IMPORTANT: Please create a folder named 'assets' inside your 'src' folder.
+// Inside 'assets', create another folder named 'images'.
+// Place your 'dona.JPG' file in 'src/assets/images/'.
+import aboutImage from './assets/images/dona.JPG'; 
+
 
 // --- Helper Functions & Configuration ---
 
@@ -201,7 +208,7 @@ const HeroSection = () => {
     const siteContent = useFirestoreDocument('site_content', 'main');
     const intro = siteContent?.hero || { title: "Welcome to my Digital Space", subtitle: "Software Developer | Graphic Designer | IT Consultant", text: "I build beautiful and functional applications for the web." };
 
-    const backgroundImages = React.useMemo(() => [
+    const backgroundImages = useMemo(() => [
         'https://images.unsplash.com/photo-1550439062-609e1531270e?q=80&w=2070&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop',
         'https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=1931&auto=format&fit=crop',
