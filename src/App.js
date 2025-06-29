@@ -364,6 +364,7 @@ const TeamSection = () => {
     );
 };
 
+
 const TestimonialsSection = () => {
     const testimonials = useFirestoreCollection('testimonials');
     
@@ -982,7 +983,7 @@ const AdminDashboard = ({ onLogout, setPage }) => {
                          { name: 'imageUrl', label: 'Image', type: 'file' },
                     ]}
                 />
-                <ContentEditor
+                 <ContentEditor
                     collectionName="teamMembers"
                     fields={[
                         { name: 'name', label: 'Name' },
