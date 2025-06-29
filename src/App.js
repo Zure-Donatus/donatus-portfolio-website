@@ -10,7 +10,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 // IMPORTANT: Please create a folder named 'assets' inside your 'src' folder.
 // Inside 'assets', create another folder named 'images'.
 // Place your 'dona.JPG' file in 'src/assets/images/'.
-import aboutImage from './assets/images/dona.JPG'; 
+import aboutImage from './assets/images/dona.jpg'; 
 
 
 // --- Helper Functions & Configuration ---
