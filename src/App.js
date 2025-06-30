@@ -471,7 +471,7 @@ const Chatbot = () => {
     useEffect(() => {
         if (isOpen && !portfolioContext) {
             const fetchAllData = async () => {
-                const collections = ['skills', 'projects', 'services', 'blogPosts', 'testimonials'];
+                const collections = ['skills', 'projects', 'services', 'blogPosts', 'testimonials', 'teamMembers'];
                 let context = '';
                 
                 const siteContentDoc = await getDoc(doc(db, 'site_content', 'main'));
