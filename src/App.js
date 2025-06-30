@@ -6,13 +6,6 @@ import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from
 import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, getDoc, setDoc, getDocs } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-// --- Local Image Imports ---
-// IMPORTANT: Please create a folder named 'assets' inside your 'src' folder.
-// Inside 'assets', create another folder named 'images'.
-// Place your 'dona.JPG' file in 'src/assets/images/'.
-import aboutImage from './assets/images/dona.jpg'; 
-
-
 // --- Helper Functions & Configuration ---
 
 const firebaseConfig = {
@@ -550,7 +543,7 @@ const Chatbot = () => {
         }
     };
     
-    const chatContainerRef = React.useRef(null);
+    const chatContainerRef = useRef(null);
     useEffect(() => {
         if(chatContainerRef.current) {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
@@ -903,10 +896,9 @@ const SiteContentEditor = () => {
             await uploadBytes(storageRef, file);
             const downloadURL = await getDownloadURL(storageRef);
             
-            setContent(prev => ({
-                ...prev,
-                [section]: { ...prev[section], [field]: downloadURL }
-            }));
+            const docRef = doc(db, 'site_content', 'main');
+            const updatedSection = { ...content[section], [field]: downloadURL };
+            await updateDoc(docRef, { [section]: updatedSection });
 
         } catch (error) {
              console.error("Error uploading file: ", error);
@@ -920,7 +912,7 @@ const SiteContentEditor = () => {
         <div className="p-6 bg-gray-900 rounded-lg text-white space-y-8">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Main Site Content</h2>
-                <button onClick={handleSave} className="bg-green-600 px-6 py-2 rounded-md hover:bg-green-500">Save All Changes</button>
+                <button onClick={handleSave} className="bg-green-600 px-6 py-2 rounded-md hover:bg-green-500">Save Text Changes</button>
             </div>
 
             <div className="p-4 bg-gray-800 rounded-lg">
