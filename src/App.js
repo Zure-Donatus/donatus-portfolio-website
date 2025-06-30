@@ -896,9 +896,10 @@ const SiteContentEditor = () => {
             await uploadBytes(storageRef, file);
             const downloadURL = await getDownloadURL(storageRef);
             
-            const docRef = doc(db, 'site_content', 'main');
-            const updatedSection = { ...content[section], [field]: downloadURL };
-            await updateDoc(docRef, { [section]: updatedSection });
+            setContent(prev => ({
+                ...prev,
+                [section]: { ...prev[section], [field]: downloadURL }
+            }));
 
         } catch (error) {
              console.error("Error uploading file: ", error);
@@ -912,7 +913,7 @@ const SiteContentEditor = () => {
         <div className="p-6 bg-gray-900 rounded-lg text-white space-y-8">
             <div className="flex justify-between items-center">
                 <h2 className="text-2xl font-bold">Main Site Content</h2>
-                <button onClick={handleSave} className="bg-green-600 px-6 py-2 rounded-md hover:bg-green-500">Save Text Changes</button>
+                <button onClick={handleSave} className="bg-green-600 px-6 py-2 rounded-md hover:bg-green-500">Save All Changes</button>
             </div>
 
             <div className="p-4 bg-gray-800 rounded-lg">
