@@ -48,7 +48,7 @@ const Icons = {
     edit: "M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10",
     chatbot: "M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM21 12c0 5.385-4.059 9.75-9 9.75s-9-4.365-9-9.75 4.059-9.75 9-9.75 9 4.365 9 9.75z",
     send: "M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z",
-    github: "M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12 4.125a7.875 7.875 0 110 15.75 7.875 7.875 0 010-15.75zm-3.187 8.313a.75.75 0 00-1.063.22l-1.5 2.25a.75.75 0 101.28.858l1.5-2.25a.75.75 0 00-.217-1.088zm6.374 0a.75.75 0 00-.217 1.088l1.5 2.25a.75.75 0 101.28-.858l-1.5-2.25a.75.75 0 00-1.063-.22z",
+    github: "M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12 4.125a7.875 7.875 0 110 15.75 7.875 7.875 0 010-16.5zm-3.187 8.313a.75.75 0 00-1.063.22l-1.5 2.25a.75.75 0 101.28.858l1.5-2.25a.75.75 0 00-.217-1.088zm6.374 0a.75.75 0 00-.217 1.088l1.5 2.25a.75.75 0 101.28-.858l-1.5-2.25a.75.75 0 00-1.063-.22z",
     linkedin: "M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zm-11 6H5v9h3V9zm-1.5-2.25a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM17 9h-2.1c-1.6 0-2.9 1.3-2.9 2.9V18h3v-5.1c0-.6.5-1.1 1.1-1.1h.9V9z",
     facebook: "M12 2.04c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm2.5 10.5h-2v5h-3v-5h-2v-2.5h2v-2c0-1.7 1.1-2.5 2.8-2.5h1.7v2.5h-1.1c-.6 0-.7.3-.7.7v1.6h1.8l-.2 2.5z",
     tiktok: "M12 2.04c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm4.2 5.96h-2.7v6.5c0 1.4-.9 2.5-2.5 2.5s-2.5-1.1-2.5-2.5V9.5h-2.7V7h2.7v-.5c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5V7h2.7v2.5z"
@@ -874,8 +874,7 @@ const SiteContentEditor = () => {
                     const defaultContent = {
                         hero: { title: "Welcome!", subtitle: "Your Subtitle", text: "Your introduction." },
                         about: { text: "About you...", imageUrl: "" },
-                        contact: { email: "your@email.com", phone: "Your Phone", resumeUrl: "" },
-                        socials: { github: "", linkedin: "", facebook: "", tiktok: "", whatsapp: "" }
+                        contact: { email: "your@email.com", phone: "Your Phone", resumeUrl: "" }
                     };
                     await setDoc(docRef, defaultContent);
                     setContent(defaultContent);
@@ -949,19 +948,12 @@ const SiteContentEditor = () => {
              </div>
             
              <div className="p-4 bg-gray-800 rounded-lg">
-                <h3 className="font-bold text-lg mb-2">Contact & Socials</h3>
+                <h3 className="font-bold text-lg mb-2">Contact Section</h3>
                 <input value={content.contact?.email || ''} onChange={e => setContent({...content, contact: {...content.contact, email: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="Email"/>
                 <input value={content.contact?.phone || ''} onChange={e => setContent({...content, contact: {...content.contact, phone: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="Phone"/>
                 <label className="block text-sm font-medium my-2">CV / Resume File (Upload new to replace)</label>
                 <input type="file" onChange={(e) => handleFileChange(e, 'contact', 'resumeUrl')} className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"/>
                 {content.contact?.resumeUrl && <a href={content.contact.resumeUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-400 text-sm mt-2 block hover:underline">Current CV Link</a>}
-                
-                <h3 className="font-bold text-lg mt-6 mb-2">Social Media Links</h3>
-                <input value={content.socials?.github || ''} onChange={e => setContent({...content, socials: {...content.socials, github: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="GitHub URL"/>
-                <input value={content.socials?.linkedin || ''} onChange={e => setContent({...content, socials: {...content.socials, linkedin: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="LinkedIn URL"/>
-                <input value={content.socials?.whatsapp || ''} onChange={e => setContent({...content, socials: {...content.socials, whatsapp: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="WhatsApp Link (e.g., https://wa.me/233...)"/>
-                <input value={content.socials?.facebook || ''} onChange={e => setContent({...content, socials: {...content.socials, facebook: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="Facebook URL"/>
-                <input value={content.socials?.tiktok || ''} onChange={e => setContent({...content, socials: {...content.socials, tiktok: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="TikTok URL"/>
             </div>
 
         </div>
@@ -1114,7 +1106,7 @@ export default function App() {
     };
 
     if (!authReady) {
-        return <div className="bg-gray-900 min-h-screen flex items-center justify-center text-white text-xl">Initializing...</div>;
+        return <div className="bg-gray-900 min-h-screen flex items-center justify-center text-white text-xl">Prisdon</div>;
     }
 
     return renderPage();
