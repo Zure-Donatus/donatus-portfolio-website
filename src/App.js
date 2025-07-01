@@ -302,7 +302,10 @@ const ProjectsSection = () => {
                         <div className="md:order-last">
                             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">{project.title}</h3>
                             <p className="text-slate-600 dark:text-slate-300 mb-4">{project.description}</p>
-                            {project.link && <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-indigo-500 hover:text-indigo-400 font-semibold">View Project &rarr;</a>}
+                             <div className="flex space-x-4">
+                                {project.link && <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-indigo-500 hover:text-indigo-400 font-semibold">View Project &rarr;</a>}
+                                {project.githubLink && <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-indigo-400 font-semibold"><Icon path={Icons.github} /></a>}
+                            </div>
                         </div>
                          <img src={project.imageUrl || 'https://placehold.co/600x400/374151/FFFFFF?text=Project'} alt={project.title} className="rounded-lg shadow-2xl w-full h-auto object-cover transform hover:scale-105 transition-transform duration-300"/>
                     </div>
@@ -317,7 +320,10 @@ const ProjectsSection = () => {
                         <div className="p-6">
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{project.title}</h3>
                             <p className="text-slate-600 dark:text-slate-300 mb-4 text-sm h-20 overflow-y-auto">{project.description}</p>
-                            {project.link && <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-indigo-500 hover:text-indigo-400 font-semibold text-sm">View Project &rarr;</a>}
+                             <div className="flex space-x-4">
+                                {project.link && <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-indigo-500 hover:text-indigo-400 font-semibold text-sm">View Project &rarr;</a>}
+                                {project.githubLink && <a href={project.githubLink} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-indigo-400 font-semibold"><Icon path={Icons.github} /></a>}
+                            </div>
                         </div>
                     </div>
                 ))}
@@ -874,7 +880,8 @@ const SiteContentEditor = () => {
                     const defaultContent = {
                         hero: { title: "Welcome!", subtitle: "Your Subtitle", text: "Your introduction." },
                         about: { text: "About you...", imageUrl: "" },
-                        contact: { email: "your@email.com", phone: "Your Phone", resumeUrl: "" }
+                        contact: { email: "your@email.com", phone: "Your Phone", resumeUrl: "" },
+                        socials: { github: "", linkedin: "", facebook: "", tiktok: "", whatsapp: "" }
                     };
                     await setDoc(docRef, defaultContent);
                     setContent(defaultContent);
@@ -948,12 +955,19 @@ const SiteContentEditor = () => {
              </div>
             
              <div className="p-4 bg-gray-800 rounded-lg">
-                <h3 className="font-bold text-lg mb-2">Contact Section</h3>
+                <h3 className="font-bold text-lg mb-2">Contact & Socials</h3>
                 <input value={content.contact?.email || ''} onChange={e => setContent({...content, contact: {...content.contact, email: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="Email"/>
                 <input value={content.contact?.phone || ''} onChange={e => setContent({...content, contact: {...content.contact, phone: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="Phone"/>
                 <label className="block text-sm font-medium my-2">CV / Resume File (Upload new to replace)</label>
                 <input type="file" onChange={(e) => handleFileChange(e, 'contact', 'resumeUrl')} className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"/>
                 {content.contact?.resumeUrl && <a href={content.contact.resumeUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-400 text-sm mt-2 block hover:underline">Current CV Link</a>}
+                
+                <h3 className="font-bold text-lg mt-6 mb-2">Social Media Links</h3>
+                <input value={content.socials?.github || ''} onChange={e => setContent({...content, socials: {...content.socials, github: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="GitHub URL"/>
+                <input value={content.socials?.linkedin || ''} onChange={e => setContent({...content, socials: {...content.socials, linkedin: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="LinkedIn URL"/>
+                <input value={content.socials?.whatsapp || ''} onChange={e => setContent({...content, socials: {...content.socials, whatsapp: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="WhatsApp Link (e.g., https://wa.me/233...)"/>
+                <input value={content.socials?.facebook || ''} onChange={e => setContent({...content, socials: {...content.socials, facebook: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="Facebook URL"/>
+                <input value={content.socials?.tiktok || ''} onChange={e => setContent({...content, socials: {...content.socials, tiktok: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="TikTok URL"/>
             </div>
 
         </div>
@@ -996,6 +1010,7 @@ const AdminDashboard = ({ onLogout, setPage }) => {
                         { name: 'isFeatured', label: 'Featured?', type: 'checkbox' },
                         { name: 'description', label: 'Description', type: 'textarea' },
                         { name: 'link', label: 'Project URL' },
+                        { name: 'githubLink', label: 'GitHub URL' },
                          { name: 'imageUrl', label: 'Image', type: 'file' },
                     ]}
                 />
