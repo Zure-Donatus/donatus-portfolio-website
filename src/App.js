@@ -1,28 +1,27 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 
-// --- Firebase Imports ---
+// --- Firebase Imports (Storage has been removed) ---
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, getDoc, setDoc, getDocs } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+// NOTE: Firebase Storage imports are gone.
 
 // --- Helper Functions & Configuration ---
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC84ypEJm8Y102eoGom6ZS5ZIJwl6WCEFc",
-  authDomain: "donatus-portfolio.firebaseapp.com",
-  projectId: "donatus-portfolio",
-  storageBucket: "donatus-portfolio.appspot.com",
-  messagingSenderId: "665010203194",
-  appId: "1:665010203194:web:c6c9cdd6788f4c78186303",
+    apiKey: "AIzaSyC84ypEJm8Y102eoGom6ZS5ZIJwl6WCEFc", // It's highly recommended to hide this in an environment file
+    authDomain: "donatus-portfolio.firebaseapp.com",
+    projectId: "donatus-portfolio",
+    storageBucket: "donatus-portfolio.appspot.com",
+    messagingSenderId: "665010203194",
+    appId: "1:665010203194:web:c6c9cdd6788f4c78186303",
 };
-
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const storage = getStorage(app);
+// NOTE: `const storage = getStorage(app);` has been removed.
 
 // --- Icon Components ---
 const Icon = ({ path, className = "w-6 h-6" }) => (
@@ -40,7 +39,7 @@ const Icons = {
     design: "M12 2.25a.75.75 0 01.75.75v11.265l3.22-3.22a.75.75 0 011.06 1.06l-4.5 4.5a.75.75 0 01-1.06 0l-4.5-4.5a.75.75 0 111.06-1.06l3.22 3.22V3a.75.75 0 01.75-.75zM3 18.75a.75.75 0 000 1.5h18a.75.75 0 000-1.5H3z",
     consultancy: "M18 18.75h-5.25v-6.75h5.25V18.75zM11.25 12H6v6.75h5.25V12zM18 3.75h-5.25V10.5h5.25V3.75zM11.25 3.75H6v5.25h5.25V3.75z",
     download: "M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3",
-    email: "M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75",
+    email: "M21.75 6.75v10.5a2.25 2.25 0 01-2.25-2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75",
     whatsapp: "M19.722 8.384a8.216 8.216 0 00-11.623 11.624L4.5 21l1.002-3.608a8.216 8.216 0 0011.624-11.623zM12.001 2.3a9.716 9.716 0 017.34 3.793 9.716 9.716 0 01-3.792 15.05l-1.372.41-1.03 3.714-3.715-1.03-.41-1.37A9.716 9.716 0 012.3 12a9.664 9.664 0 013.792-7.34A9.664 9.664 0 0112.002 2.3zm0 4.39a.75.75 0 00-.75.75v3.61a.75.75 0 00.75.75h2.54a.75.75 0 000-1.5h-1.79V7.44a.75.75 0 00-.75-.75z",
     phone: "M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3",
     upload: "M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5",
@@ -702,7 +701,8 @@ const AdminLogin = ({ onLogin }) => {
     );
 };
 
-const EditForm = ({ item, setItem, onSave, onCancel, onFileChange, collectionName, fields }) => (
+// MODIFIED COMPONENT: The onFileChange prop has been removed as it is no longer needed.
+const EditForm = ({ item, setItem, onSave, onCancel, collectionName, fields }) => (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
         <div className="bg-gray-800 p-6 rounded-lg w-full max-w-2xl max-h-screen overflow-y-auto">
             <h3 className="text-xl font-bold mb-4 capitalize">{item.id ? 'Edit' : 'New'} {collectionName.slice(0, -1)}</h3>
@@ -718,13 +718,17 @@ const EditForm = ({ item, setItem, onSave, onCancel, onFileChange, collectionNam
                                 className="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white"
                             />
                         ) : field.type === 'file' ? (
+                            // --- THIS IS THE MAIN CHANGE ---
+                            // The file input is now a text input for the Cloudinary URL
                             <div>
                                 <input
-                                    type="file"
-                                    onChange={(e) => onFileChange(e, field.name)}
-                                    className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                                    type="text"
+                                    placeholder="Paste image URL from Cloudinary"
+                                    value={item[field.name] || ''}
+                                    onChange={(e) => setItem({ ...item, [field.name]: e.target.value })}
+                                    className="w-full bg-gray-700 border border-gray-600 rounded-md p-2 text-white"
                                 />
-                                {item[field.name] && <img src={item[field.name]} alt="Upload preview" className="mt-2 h-20 rounded" />}
+                                {item[field.name] && <img src={item[field.name]} alt="URL preview" className="mt-2 h-20 rounded" />}
                             </div>
                         ) : field.type === 'checkbox' ? (
                             <input
@@ -803,19 +807,7 @@ const ContentEditor = ({ collectionName, fields }) => {
         }
     };
     
-    const handleFileChange = async (e, fieldName) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const storageRef = ref(storage, `${collectionName}/${Date.now()}_${file.name}`);
-        try {
-            await uploadBytes(storageRef, file);
-            const downloadURL = await getDownloadURL(storageRef);
-            setEditingItem(prev => ({ ...prev, [fieldName]: downloadURL }));
-        } catch (error) {
-            console.error("Error uploading file: ", error);
-        }
-    };
+    // NOTE: The handleFileChange function has been completely removed.
 
     return (
         <div className="p-4 sm:p-6 bg-gray-900 rounded-lg text-white">
@@ -825,7 +817,7 @@ const ContentEditor = ({ collectionName, fields }) => {
                     setItem={setEditingItem}
                     onSave={handleSave}
                     onCancel={() => setEditingItem(null)}
-                    onFileChange={handleFileChange}
+                    // onFileChange prop removed
                     collectionName={collectionName}
                     fields={fields}
                 />
@@ -909,25 +901,7 @@ const SiteContentEditor = () => {
         }
     };
     
-
-    const handleFileChange = async (e, section, field) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const storageRef = ref(storage, `site_content/${Date.now()}_${file.name}`);
-        try {
-            await uploadBytes(storageRef, file);
-            const downloadURL = await getDownloadURL(storageRef);
-            
-            setContent(prev => ({
-                ...prev,
-                [section]: { ...prev[section], [field]: downloadURL }
-            }));
-
-        } catch (error) {
-             console.error("Error uploading file: ", error);
-        }
-    };
+    // NOTE: The handleFileChange function has been completely removed.
 
     if (isLoading) return <div className="text-white text-center p-10">Loading Content Editor...</div>;
     if (!content) return <div className="text-red-400 text-center p-10">Error loading site content. Check Firestore permissions.</div>
@@ -949,8 +923,15 @@ const SiteContentEditor = () => {
             <div className="p-4 bg-gray-800 rounded-lg">
                 <h3 className="font-bold text-lg mb-2">About Section</h3>
                 <textarea value={content.about?.text || ''} onChange={e => setContent({...content, about: {...content.about, text: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="About Me Text" rows="5"></textarea>
-                <label className="block text-sm font-medium my-2">Profile Picture</label>
-                <input type="file" onChange={(e) => handleFileChange(e, 'about', 'imageUrl')} className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"/>
+                <label className="block text-sm font-medium my-2">Profile Picture URL</label>
+                {/* File input changed to text input */}
+                <input 
+                    type="text" 
+                    placeholder="Paste Profile Picture URL from Cloudinary"
+                    value={content.about?.imageUrl || ''}
+                    onChange={e => setContent({...content, about: {...content.about, imageUrl: e.target.value}})}
+                    className="w-full bg-gray-700 p-2 rounded mb-2 text-white"
+                />
                 {content.about?.imageUrl && <img src={content.about.imageUrl} alt="About me preview" className="h-20 mt-2 rounded" />}
              </div>
             
@@ -958,8 +939,15 @@ const SiteContentEditor = () => {
                 <h3 className="font-bold text-lg mb-2">Contact & Socials</h3>
                 <input value={content.contact?.email || ''} onChange={e => setContent({...content, contact: {...content.contact, email: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="Email"/>
                 <input value={content.contact?.phone || ''} onChange={e => setContent({...content, contact: {...content.contact, phone: e.target.value}})} className="w-full bg-gray-700 p-2 rounded mb-2 text-white" placeholder="Phone"/>
-                <label className="block text-sm font-medium my-2">CV / Resume File (Upload new to replace)</label>
-                <input type="file" onChange={(e) => handleFileChange(e, 'contact', 'resumeUrl')} className="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"/>
+                <label className="block text-sm font-medium my-2">CV / Resume URL</label>
+                 {/* File input changed to text input */}
+                <input 
+                    type="text"
+                    placeholder="Paste CV PDF URL from Cloudinary"
+                    value={content.contact?.resumeUrl || ''}
+                    onChange={e => setContent({...content, contact: {...content.contact, resumeUrl: e.target.value}})}
+                    className="w-full bg-gray-700 p-2 rounded mb-2 text-white"
+                />
                 {content.contact?.resumeUrl && <a href={content.contact.resumeUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-400 text-sm mt-2 block hover:underline">Current CV Link</a>}
                 
                 <h3 className="font-bold text-lg mt-6 mb-2">Social Media Links</h3>
@@ -992,7 +980,7 @@ const AdminDashboard = ({ onLogout, setPage }) => {
                         { name: 'title', label: 'Title' },
                         { name: 'summary', label: 'Summary', type: 'textarea', rows: 3 },
                         { name: 'content', label: 'Full Content', type: 'textarea', rows: 15 },
-                        { name: 'imageUrl', label: 'Header Image', type: 'file' },
+                        { name: 'imageUrl', label: 'Header Image URL', type: 'file' }, // type 'file' is now handled as a text input
                     ]}
                 />
                 <ContentEditor
@@ -1011,7 +999,7 @@ const AdminDashboard = ({ onLogout, setPage }) => {
                         { name: 'description', label: 'Description', type: 'textarea' },
                         { name: 'link', label: 'Project URL' },
                         { name: 'githubLink', label: 'GitHub URL' },
-                         { name: 'imageUrl', label: 'Image', type: 'file' },
+                         { name: 'imageUrl', label: 'Image URL', type: 'file' }, // type 'file' is now handled as a text input
                     ]}
                 />
                  <ContentEditor
@@ -1020,7 +1008,7 @@ const AdminDashboard = ({ onLogout, setPage }) => {
                         { name: 'name', label: 'Name' },
                         { name: 'title', label: 'Title' },
                         { name: 'description', label: 'Description', type: 'textarea' },
-                        { name: 'imageUrl', label: 'Photo', type: 'file' },
+                        { name: 'imageUrl', label: 'Photo URL', type: 'file' }, // type 'file' is now handled as a text input
                     ]}
                 />
                 <ContentEditor
